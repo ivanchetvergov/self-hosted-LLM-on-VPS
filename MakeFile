@@ -1,0 +1,33 @@
+# поднять всё
+up:
+	cd infra && docker compose up -d
+
+# поднять с пересборкой (после изменений в Dockerfile или requirements)
+build:
+	cd infra && docker compose up -d --build
+
+# положить всё
+down:
+	cd infra && docker compose down
+
+# логи всех сервисов, ctrl+c чтобы выйти
+logs:
+	cd infra && docker compose logs -f
+
+# логи конкретного сервиса: make logs-s s=backend
+logs-s:
+	cd infra && docker compose logs -f $(s)
+
+# скачать модель в ollama
+pull-model:
+	docker exec -it infra-ollama-1 ollama pull qwen2.5:14b
+
+# статус контейнеров
+ps:
+	cd infra && docker compose ps
+
+# полная чистка — удаляет контейнеры и volumes
+nuke:
+	cd infra && docker compose down -v
+
+.PHONY: up build down logs logs-s pull-model ps nuke
